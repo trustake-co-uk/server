@@ -11,7 +11,7 @@ UNDERLINE='\033[4m'
 function setVars() {
 ## set network dependent variables
 NODE_USER=pivx
-COINCORE=/home/${NODE_USER}/${NODE_USER}/.pivx
+COINCORE=/home/${NODE_USER}/.${NODE_USER}
 COINPORT=51472 #51474 testnet
 COINRPCPORT=51473 #51475 testnet
 
@@ -172,6 +172,7 @@ function compileWallet() {
     echo -e "* Compiling wallet. Please wait, this might take a while to complete..."
     rm -rf ${COINBINDIR} &>> ${SCRIPT_LOGFILE}
     mkdir -p ${COINBINDIR} &>> ${SCRIPT_LOGFILE}
+    mkdir -p ${COINCORE} &>> ${SCRIPT_LOGFILE}
     cd /home/${NODE_USER}/
     wget --https-only -O coinbin.tar ${COINBIN} &>> ${SCRIPT_LOGFILE}
     tar -zxf coinbin.tar -C ${COINBINDIR} &>> ${SCRIPT_LOGFILE}
@@ -206,6 +207,13 @@ function stopWallet() {
     echo
     echo -e "* Stopping wallet daemon...${COINSERVICENAME}"
     service ${COINSERVICENAME} stop &>> ${SCRIPT_LOGFILE}
+    sleep 2
+    echo -e "${GREEN}* Done${NONE}";
+}
+function restartWallet() {
+    echo
+    echo -e "* Restart wallet daemon...${COINSERVICENAME}"
+    service ${COINSERVICENAME} restart &>> ${SCRIPT_LOGFILE}
     sleep 2
     echo -e "${GREEN}* Done${NONE}";
 }
@@ -253,13 +261,12 @@ cd /home/${NODE_USER}/
     setupSwap
     installFail2Ban
     installFirewall
-#    installDependencies
-#    compileWallet
+    installDependencies
+    compileWallet
     installWallet
     installUnattendedUpgrades
     startWallet
-    stopWallet
-    startWallet
+    restartWallet
     set_permissions
     displayServiceStatus
 
