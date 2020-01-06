@@ -140,8 +140,8 @@ function installDependencies() {
     ## Sufficient dependencies to compile from source if require
     apt-get install git ntp nano wget curl make gcc software-properties-common -y &>> ${SCRIPT_LOGFILE}
     add-apt-repository -yu ppa:pivx/pivx  &>> ${SCRIPT_LOGFILE}
-    apt-get -qq -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update  &>> ${SCRIPT_LOGFILE}
-    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install build-essential \
+    apt-get -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update  &>> ${SCRIPT_LOGFILE}
+    apt-get -y -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install build-essential \
     protobuf-compiler libboost-all-dev autotools-dev automake libcurl4-openssl-dev \
     libssl-dev libgmp-dev make autoconf libtool git apt-utils g++ \
     libprotobuf-dev pkg-config libcurl3-dev libudev-dev libqrencode-dev bsdmainutils \
