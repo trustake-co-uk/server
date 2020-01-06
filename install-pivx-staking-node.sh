@@ -21,10 +21,10 @@ DATE_STAMP="$(date +%y-%m-%d-%s)"
 OS_VER="Ubuntu*"
 RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-COINBIN=https://github.com/PIVX-Project/PIVX/releases/download/v3.3.0/pivx-3.3.0-x86_64-linux-gnu.tar.gz
+COINBIN=https://github.com/PIVX-Project/PIVX/releases/download/v4.0.0/pivx-4.0.0-x86_64-linux-gnu.tar.gz
 COINDAEMON=${NODE_USER}d
 COINSTARTUP=/home/${NODE_USER}/${NODE_USER}d
-COINDLOC=/home/${NODE_USER}/${NODE_USER}node
+COINDLOC=/home/${NODE_USER}/${NODE_USER}node/pivx-4.0.0/bin/
 COINSERVICELOC=/etc/systemd/system/
 COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
@@ -210,7 +210,7 @@ function stopWallet() {
 function installUnattendedUpgrades() {
     echo
     echo "* Installing Unattended Upgrades..."
-    apt install unattended-upgrades -y &>> ${SCRIPT_LOGFILE}
+    apt-get install unattended-upgrades -y &>> ${SCRIPT_LOGFILE}
     sleep 3
     sh -c 'echo "Unattended-Upgrade::Allowed-Origins {" >> /etc/apt/apt.conf.d/50unattended-upgrades'
     sh -c 'echo "        \"\${distro_id}:\${distro_codename}\";" >> /etc/apt/apt.conf.d/50unattended-upgrades'
@@ -255,9 +255,9 @@ cd /home/${NODE_USER}/
     installWallet
     installUnattendedUpgrades
     startWallet
+    stopWallet
+    startWallet
     set_permissions
-    #stopWallet
-    #startWallet
     displayServiceStatus
 
 echo
