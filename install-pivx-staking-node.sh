@@ -24,12 +24,13 @@ COINBIN=https://github.com/PIVX-Project/PIVX/releases/download/v4.0.0/pivx-4.0.0
 COINDAEMON=${NODE_USER}d
 COINSTARTUP=/home/${NODE_USER}/${NODE_USER}-start
 COINSTOP=/home/${NODE_USER}/${NODE_USER}-stop
+COINBINDIR=/home/${NODE_USER}/${NODE_USER}node/
 COINDLOC=/home/${NODE_USER}/${NODE_USER}node/pivx-4.0.0/bin/
 COINSERVICELOC=/etc/systemd/system/
 COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
-COINRUNCMD="./${COINDAEMON} -daemon -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS} \${stakeparams}"
+COINRUNCMD="./${COINDAEMON} -daemon -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS}"
 COINSTOPCMD="./${NODE_USER}-cli -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS} stop"
 }
 
@@ -169,11 +170,11 @@ function installDependencies() {
 function compileWallet() {
     echo
     echo -e "* Compiling wallet. Please wait, this might take a while to complete..."
-    rm -rf ${COINDLOC} &>> ${SCRIPT_LOGFILE}
-    mkdir -p ${COINDLOC} &>> ${SCRIPT_LOGFILE}
+    rm -rf ${COINBINDIR} &>> ${SCRIPT_LOGFILE}
+    mkdir -p ${COINBINDIR} &>> ${SCRIPT_LOGFILE}
     cd /home/${NODE_USER}/
     wget --https-only -O coinbin.tar ${COINBIN} &>> ${SCRIPT_LOGFILE}
-    tar -zxf coinbin.tar -C ${COINDLOC} &>> ${SCRIPT_LOGFILE}
+    tar -zxf coinbin.tar -C ${COINBINDIR} &>> ${SCRIPT_LOGFILE}
     rm coinbin.tar &>> ${SCRIPT_LOGFILE}
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
@@ -187,7 +188,8 @@ function installWallet() {
     echo -e "[Unit]\nDescription=${COINDAEMON}\nAfter=network-online.target\n\n[Service]\nType=simple\nUser=${NODE_USER}\nGroup=${NODE_USER}\nExecStart=${COINSTARTUP}\nExecStop=${COINSTOP}\nRestart=always\nRestartSec=5\nPrivateTmp=true\nTimeoutStopSec=60s\nTimeoutStartSec=5s\nStartLimitInterval=120s\nStartLimitBurst=15\n\n[Install]\nWantedBy=multi-user.target" >${COINSERVICENAME}.service
     chown -R ${NODE_USER}:${NODE_USER} ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
     mv $COINSERVICENAME.service ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
-    chmod 777 ${COINSTARTUP} &>> ${SCRIPT_LOGFILE}
+    chmod +x ${COINSTARTUP} &>> ${SCRIPT_LOGFILE}
+    chmod +x ${COINSTOP} &>> ${SCRIPT_LOGFILE}
     systemctl --system daemon-reload &>> ${SCRIPT_LOGFILE}
     systemctl enable ${COINSERVICENAME} &>> ${SCRIPT_LOGFILE}
     echo -e "${NONE}${GREEN}* Done${NONE}";
