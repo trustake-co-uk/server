@@ -33,7 +33,7 @@ SWAPSIZE="1024" ## =1GB
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
 COINRUNCMD="./${COINDAEMON} -daemon -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS}"
 COINSTOPCMD="./${NODE_USER}-cli -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS} stop"
-COININFOCMD="./${NODE_USER}-cli -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS} $@"
+COININFOCMD="./${NODE_USER}-cli -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS} \$@"
 }
 
 function check_root() {
@@ -210,6 +210,7 @@ function startWallet() {
 function stopWallet() {
     echo
     echo -e "* Stopping wallet daemon...${COINSERVICENAME}"
+    sleep 20
     service ${COINSERVICENAME} stop &>> ${SCRIPT_LOGFILE}    echo -e "${GREEN}* Done${NONE}";
 }
 function restartWallet() {
@@ -265,10 +266,9 @@ cd /home/${NODE_USER}/
     installDependencies
     compileWallet
     installWallet
+    set_permissions
     installUnattendedUpgrades
     startWallet
-    restartWallet
-    set_permissions
     displayServiceStatus
 
 echo
