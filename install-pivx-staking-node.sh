@@ -31,7 +31,7 @@ COINSERVICELOC=/etc/systemd/system/
 COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
-COINRUNCMD="./${COINDAEMON} -daemon -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS}"
+COINRUNCMD="./${COINDAEMON} -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS}"
 COINSTOPCMD="./${NODE_USER}-cli -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS} stop"
 COININFOCMD="./${NODE_USER}-cli -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS} \$@"
 }
@@ -144,11 +144,7 @@ function installDependencies() {
     apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install git ntp nano wget curl make gcc software-properties-common &>> ${SCRIPT_LOGFILE}
     add-apt-repository -yu ppa:pivx/pivx  &>> ${SCRIPT_LOGFILE}
     apt-get -qq -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update  &>> ${SCRIPT_LOGFILE}
-    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install build-essential \
-    protobuf-compiler libboost-all-dev autotools-dev automake libcurl4-openssl-dev \
-    libssl-dev libgmp-dev make autoconf libtool git apt-utils g++ \
-    libprotobuf-dev pkg-config libcurl3-dev libudev-dev libqrencode-dev bsdmainutils \
-    pkg-config libgmp3-dev libevent-dev jp2a pv virtualenv libdb4.8-dev libdb4.8++-dev  &>> ${SCRIPT_LOGFILE}
+    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install build-essential protobuf-compiler libboost-all-dev autotools-dev automake libcurl4-openssl-dev libssl-dev libgmp-dev make autoconf libtool git apt-utils g++ libprotobuf-dev pkg-config libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libgmp3-dev libevent-dev jp2a pv virtualenv libdb4.8-dev libdb4.8++-dev &>> ${SCRIPT_LOGFILE}
 
     if [[ -r /etc/os-release ]]; then
         . /etc/os-release
