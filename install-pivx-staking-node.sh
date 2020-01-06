@@ -188,12 +188,13 @@ function installWallet() {
     cd /home/${NODE_USER}/
     echo -e "#!/bin/bash\ncd $COINDLOC\n$COINRUNCMD" > ${COINSTARTUP}
     echo -e "#!/bin/bash\ncd $COINDLOC\n$COINSTOPCMD" > ${COINSTOP}
-    echo -e "#!/bin/bash\ncd $COINDLOC\n$COININFOCMD" > ${COINSINFO}
+    echo -e "#!/bin/bash\ncd $COINDLOC\n$COININFOCMD" > ${COININFO}
     echo -e "[Unit]\nDescription=${COINDAEMON}\nAfter=network-online.target\n\n[Service]\nType=simple\nUser=${NODE_USER}\nGroup=${NODE_USER}\nExecStart=${COINSTARTUP}\nRestart=always\nRestartSec=5\nPrivateTmp=true\nTimeoutStopSec=60s\nTimeoutStartSec=5s\nStartLimitInterval=120s\nStartLimitBurst=15\n\n[Install]\nWantedBy=multi-user.target" >${COINSERVICENAME}.service
     chown -R ${NODE_USER}:${NODE_USER} ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
     mv $COINSERVICENAME.service ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
     chmod +x ${COINSTARTUP} &>> ${SCRIPT_LOGFILE}
     chmod +x ${COINSTOP} &>> ${SCRIPT_LOGFILE}
+    chmod +x ${COININFO} &>> ${SCRIPT_LOGFILE}
     systemctl --system daemon-reload &>> ${SCRIPT_LOGFILE}
     systemctl enable ${COINSERVICENAME} &>> ${SCRIPT_LOGFILE}
     echo -e "${NONE}${GREEN}* Done${NONE}";
@@ -203,21 +204,18 @@ function startWallet() {
     echo
     echo -e "* Starting wallet daemon...${COINSERVICENAME}"
     service ${COINSERVICENAME} start &>> ${SCRIPT_LOGFILE}
-    sleep 10
+    sleep 20
     echo -e "${GREEN}* Done${NONE}";
 }
 function stopWallet() {
     echo
     echo -e "* Stopping wallet daemon...${COINSERVICENAME}"
-    service ${COINSERVICENAME} stop &>> ${SCRIPT_LOGFILE}
-    sleep 2
-    echo -e "${GREEN}* Done${NONE}";
+    service ${COINSERVICENAME} stop &>> ${SCRIPT_LOGFILE}    echo -e "${GREEN}* Done${NONE}";
 }
 function restartWallet() {
     echo
     echo -e "* Restart wallet daemon...${COINSERVICENAME}"
     service ${COINSERVICENAME} restart &>> ${SCRIPT_LOGFILE}
-    sleep 2
     echo -e "${GREEN}* Done${NONE}";
 }
 
