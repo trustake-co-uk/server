@@ -81,7 +81,7 @@ function checkOSVersion() {
 function updateAndUpgrade() {
     echo
     echo "* Running update and upgrade. Please wait..."
-    apt-get update &>> ${SCRIPT_LOGFILE}
+    apt-get -qq -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update &>> ${SCRIPT_LOGFILE}
     DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade &>> ${SCRIPT_LOGFILE}
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y &>> ${SCRIPT_LOGFILE}
     echo -e "${GREEN}* Done${NONE}";
@@ -110,7 +110,7 @@ fi
 function installFail2Ban() {
     echo
     echo -e "* Installing fail2ban. Please wait..."
-    apt-get -y install fail2ban &>> ${SCRIPT_LOGFILE}
+    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true  install fail2ban &>> ${SCRIPT_LOGFILE}
     systemctl enable fail2ban &>> ${SCRIPT_LOGFILE}
     systemctl start fail2ban &>> ${SCRIPT_LOGFILE}
     # Add Fail2Ban memory hack if needed
@@ -124,7 +124,7 @@ function installFail2Ban() {
 function installFirewall() {
     echo
     echo -e "* Installing UFW. Please wait..."
-    apt-get -y install ufw &>> ${SCRIPT_LOGFILE}
+    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install ufw &>> ${SCRIPT_LOGFILE}
     ufw allow OpenSSH &>> ${SCRIPT_LOGFILE}
     ufw allow $COINPORT/tcp &>> ${SCRIPT_LOGFILE}
     ufw allow $COINRPCPORT/tcp &>> ${SCRIPT_LOGFILE}
@@ -141,10 +141,10 @@ function installDependencies() {
     echo -e "* Installing dependencies. Please wait..."
     timedatectl set-ntp no &>> ${SCRIPT_LOGFILE}
     ## Sufficient dependencies to compile from source if require
-    apt-get install git ntp nano wget curl make gcc software-properties-common -y &>> ${SCRIPT_LOGFILE}
+    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install git ntp nano wget curl make gcc software-properties-common &>> ${SCRIPT_LOGFILE}
     add-apt-repository -yu ppa:pivx/pivx  &>> ${SCRIPT_LOGFILE}
-    apt-get -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update  &>> ${SCRIPT_LOGFILE}
-    apt-get -y -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install build-essential \
+    apt-get -qq -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update  &>> ${SCRIPT_LOGFILE}
+    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install build-essential \
     protobuf-compiler libboost-all-dev autotools-dev automake libcurl4-openssl-dev \
     libssl-dev libgmp-dev make autoconf libtool git apt-utils g++ \
     libprotobuf-dev pkg-config libcurl3-dev libudev-dev libqrencode-dev bsdmainutils \
@@ -222,7 +222,7 @@ function restartWallet() {
 function installUnattendedUpgrades() {
     echo
     echo "* Installing Unattended Upgrades..."
-    apt-get install unattended-upgrades -y &>> ${SCRIPT_LOGFILE}
+    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true  install unattended-upgrades &>> ${SCRIPT_LOGFILE}
     sleep 3
     sh -c 'echo "Unattended-Upgrade::Allowed-Origins {" >> /etc/apt/apt.conf.d/50unattended-upgrades'
     sh -c 'echo "        \"\${distro_id}:\${distro_codename}\";" >> /etc/apt/apt.conf.d/50unattended-upgrades'
