@@ -24,6 +24,7 @@ COINBIN=https://github.com/PIVX-Project/PIVX/releases/download/v4.0.0/pivx-4.0.0
 COINDAEMON=${NODE_USER}d
 COINSTARTUP=/home/${NODE_USER}/${NODE_USER}-start
 COINSTOP=/home/${NODE_USER}/${NODE_USER}-stop
+COININFO=/home/${NODE_USER}/${NODE_USER}-cli
 COINBINDIR=/home/${NODE_USER}/${NODE_USER}node/
 COINDLOC=/home/${NODE_USER}/${NODE_USER}node/pivx-4.0.0/bin/
 COINSERVICELOC=/etc/systemd/system/
@@ -32,6 +33,7 @@ SWAPSIZE="1024" ## =1GB
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
 COINRUNCMD="./${COINDAEMON} -daemon -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS}"
 COINSTOPCMD="./${NODE_USER}-cli -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS} stop"
+COININFOCMD="./${NODE_USER}-cli -datadir=${COINCORE} -rpcuser=${RPCUSER} -rpcpassword=${RPCPASS} $@"
 }
 
 function check_root() {
@@ -186,7 +188,8 @@ function installWallet() {
     cd /home/${NODE_USER}/
     echo -e "#!/bin/bash\ncd $COINDLOC\n$COINRUNCMD" > ${COINSTARTUP}
     echo -e "#!/bin/bash\ncd $COINDLOC\n$COINSTOPCMD" > ${COINSTOP}
-    echo -e "[Unit]\nDescription=${COINDAEMON}\nAfter=network-online.target\n\n[Service]\nType=simple\nUser=${NODE_USER}\nGroup=${NODE_USER}\nExecStart=${COINSTARTUP}\nExecStop=${COINSTOP}\nRestart=always\nRestartSec=5\nPrivateTmp=true\nTimeoutStopSec=60s\nTimeoutStartSec=5s\nStartLimitInterval=120s\nStartLimitBurst=15\n\n[Install]\nWantedBy=multi-user.target" >${COINSERVICENAME}.service
+    echo -e "#!/bin/bash\ncd $COINDLOC\n$COININFOCMD" > ${COINSINFO}
+    echo -e "[Unit]\nDescription=${COINDAEMON}\nAfter=network-online.target\n\n[Service]\nType=simple\nUser=${NODE_USER}\nGroup=${NODE_USER}\nExecStart=${COINSTARTUP}\nRestart=always\nRestartSec=5\nPrivateTmp=true\nTimeoutStopSec=60s\nTimeoutStartSec=5s\nStartLimitInterval=120s\nStartLimitBurst=15\n\n[Install]\nWantedBy=multi-user.target" >${COINSERVICENAME}.service
     chown -R ${NODE_USER}:${NODE_USER} ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
     mv $COINSERVICENAME.service ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
     chmod +x ${COINSTARTUP} &>> ${SCRIPT_LOGFILE}
