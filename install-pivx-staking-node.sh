@@ -153,11 +153,11 @@ function installDependencies() {
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
         if [[ "${VERSION_ID}" = "18.04" ]]; then
-            apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install libssl1.0-dev
+            apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install libssl1.0-dev &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
         if [[ "${VERSION_ID}" = "19.04" ]]; then
-            apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install libssl1.0-dev
+            apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install libssl1.0-dev &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
         else
