@@ -25,10 +25,10 @@ COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustake-co-uk/server/ma
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustake-co-uk/server/master/config/config-$fork.sh"
 
 # Clear old installation
-rm -rf ${fork}
-rm /etc/apt/apt.conf.d/20auto-upgrades
-rm /etc/apt/apt.conf.d/50unattended-upgrades
-rm /etc/systemd/system/${fork}d@${fork}.service
+rm -rf ${fork} >/dev/null
+rm /etc/apt/apt.conf.d/20auto-upgrades >/dev/null
+rm /etc/apt/apt.conf.d/50unattended-upgrades >/dev/null
+rm /etc/systemd/system/${fork}d@${fork}.service >/dev/null
 
 # Install Coin Service
 read -p "Hit a key to install Coin service!" response
