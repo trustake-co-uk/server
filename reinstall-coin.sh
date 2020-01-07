@@ -21,8 +21,8 @@ branch="master";
 fi
 
 # =================== YOUR DATA ========================
-COINSERVICEINSTALLER="bash <( curl -s https://raw.githubusercontent.com/trustake-co-uk/server/master/install-coin.sh )"
-COINSERVICECONFIG="bash <( curl -s https://raw.githubusercontent.com/trustake-co-uk/server/master/config/config-$fork.sh"
+COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustake-co-uk/server/master/install-coin.sh )"
+COINSERVICECONFIG="https://raw.githubusercontent.com/trustake-co-uk/server/master/config/config-$fork.sh"
 
 # Clear old installation
 rm -rf ${fork}
