@@ -247,13 +247,15 @@ echo -e "${PURPLE}*  This script will install and configure your cold staking no
 echo -e "${PURPLE}**********************************************************************${NONE}"
 echo -e "${BOLD}"
 
-cd /home/${NODE_USER}/
+check_root
 
-    check_root
-    setVars
-    checkOSVersion
-    echo
+if [[ "$NET" =~ ^([mM])+$ ]]; then
+    setMainVars
+    setGeneralVars
+    SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
     echo -e "${BOLD} The log file can be monitored here: ${SCRIPT_LOGFILE}${NONE}"
+    echo -e "${BOLD}"
+    checkOSVersion
     updateAndUpgrade
     create_user
     setupSwap
@@ -262,13 +264,74 @@ cd /home/${NODE_USER}/
     installDependencies
     compileWallet
     installWallet
-    set_permissions
+    #configureWallet ### commented out so uses the default configuration
     installUnattendedUpgrades
     startWallet
+    set_permissions
     displayServiceStatus
 
-echo
-echo -e "${GREEN} Installation complete. Check service with: journalctl -f -u ${COINSERVICENAME} ${NONE}"
-echo -e "${GREEN} If you find this service valuable we appreciate any tips, please visit https://donations.coldstake.co.in ${NONE}"
-echo -e "${GREEN} thecrypt0hunter(2020)${NONE}"
-cd ~
+    echo
+    echo -e "${GREEN} Installation complete. Check service with: journalctl -f -u ${COINSERVICENAME} ${NONE}"
+    echo -e "${GREEN} If you find this service valuable we appreciate any tips, please visit https://donations.coldstake.co.in ${NONE}"
+    echo -e "${GREEN} thecrypt0hunter(2020)${NONE}"
+
+ else
+    if [[ "$NET" =~ ^([tT])+$ ]]; then
+        setTestVars
+        setGeneralVars
+        SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
+        echo -e "${BOLD} The log file can be monitored here: ${SCRIPT_LOGFILE}${NONE}"
+        echo -e "${BOLD}"
+        checkOSVersion
+        updateAndUpgrade
+        create_user
+        setupSwap
+        installFail2Ban
+        installFirewall
+        installDependencies
+        compileWallet
+        installWallet
+        #configureWallet ### commented out so uses the default configuration
+        installUnattendedUpgrades
+        startWallet
+        set_permissions
+        displayServiceStatus
+	
+        echo
+        echo -e "${GREEN} Installation complete. Check service with: journalctl -f -u ${COINSERVICENAME} ${NONE}"
+        echo -e "${GREEN} If you find this service valuable we appreciate any tips, please visit https://donations.coldstake.co.in ${NONE}"
+        echo -e "${GREEN} thecrypt0hunter(2020)${NONE}"
+
+ else
+    if [[ "$NET" =~ ^([uU])+$ ]]; then
+        check_root
+        ##TODO: Test for servicefile and only upgrade as required 
+        ##TODO: Setup for testnet - test if file exists
+        ##[ ! -f ${COINSERVICELOC}$COINSERVICENAME.service ] << Test for service file
+        #Stop Test Service
+        setTestVars
+        setGeneralVars
+        SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
+        stopWallet
+	    updateAndUpgrade
+        compileWallet
+        #Stop Main Service
+        setMainVars
+        setGeneralVars
+        SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
+        stopWallet
+        compileWallet
+        #Start Test Service
+        setTestVars
+        setGeneralVars
+        startWallet
+        #Start Main Service
+        setMainVars
+        setGeneralVars
+        startWallet
+        echo -e "${GREEN} thecrypt0hunter 2019${NONE}"
+    else
+      echo && echo -e "${RED} Installation cancelled! ${NONE}" && echo
+    fi
+  fi
+fi
