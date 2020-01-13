@@ -167,7 +167,7 @@ function installDependencies() {
 
 function compileWallet() {
     echo
-    echo -e "* Compiling wallet. Please wait, this might take a while to complete..."
+    echo -e "* Downloading & unpacking wallet. Please wait, this might take a while to complete..."
     rm -rf ${COINBINDIR} &>> ${SCRIPT_LOGFILE}
     mkdir -p ${COINBINDIR} &>> ${SCRIPT_LOGFILE}
     mkdir -p ${COINCORE} &>> ${SCRIPT_LOGFILE}
