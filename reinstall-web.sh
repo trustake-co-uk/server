@@ -33,7 +33,7 @@ DNS_NAME="${subdomain}.coldstake.co.in"
 USER="$fork-web"
 COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustake-co-uk/server/master/install-coin.sh )"
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustake-co-uk/server/master/config/config-$fork.sh"
-WEBFILE="https://github.com/trustake-co-uk//node.git"
+WEBFILE="https://github.com/trustake-co-uk/node.git"
 
 #TODO: Replace with config files
 
