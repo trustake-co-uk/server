@@ -42,7 +42,7 @@ WEBFILE="https://github.com/trustake-co-uk/node.git"
 if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in ##### TESTNET
          pivx)
-            port="51474";
+            port="51475";
             payment="1";
             ;;
          *)
@@ -53,7 +53,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
 else 
     case $fork in ##### MAINNET
         pivx)
-            port="51472";
+            port="51473";
             payment="1";
             ;;
          *)
@@ -212,7 +212,7 @@ ufw --force enable
 
 # Allow FPM Restart
 
-echo "$USER ALL=NOPASSWD: /usr/sbin/service php7.4-fpm reload" > /etc/sudoers.d/php-fpm
+echo "$USER ALL=NOPASSWD: /usr/sbin/service php7.4-fpm reload" &>> /etc/sudoers.d/php-fpm
 
 # Configure Supervisor Autostart
 

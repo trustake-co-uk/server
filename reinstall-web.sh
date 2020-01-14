@@ -40,7 +40,7 @@ WEBFILE="https://github.com/trustake-co-uk/node.git"
 if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in ##### TESTNET
          pivx)
-            port="51474";
+            port="51475";
             payment="1";
             ;;
          *)
@@ -51,7 +51,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
 else 
     case $fork in ##### MAINNET
         pivx)
-            port="51472";
+            port="51473";
             payment="1";
             ;;
          *)
@@ -143,7 +143,7 @@ cp /root/.profile /home/$USER/.profile
 cp /root/.bashrc /home/$USER/.bashrc
 
 # Remove Sudo Password For User
-echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+echo "${USER} ALL=(ALL) NOPASSWD: ALL" &>> /etc/sudoers
 
 # Setup Site Directory Permissions
 chown -R $USER:$USER /home/$USER
@@ -170,11 +170,6 @@ sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/includ
 sed -i "s/^\(\$coldstakeui='\).*/\1${coldstakeui}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$payment='\).*/\1${payment}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$whitelist='\).*/\1${whitelist}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-
-## Inject hot wallet name & password into keys.php
-source /var/secure/credentials.sh
-sed -i "s/^\(\$WalletName='\).*/\1${STAKINGNAME}';/" /var/secure/keys.php
-sed -i "s/^\(\$WalletPassword='\).*/\1${STAKINGPASSWORD}';/" /var/secure/keys.php
 
 #Inject RPC username & password into config.php
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
