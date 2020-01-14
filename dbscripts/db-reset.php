@@ -1,7 +1,7 @@
 <?php
 // Create local folder with permissions for DB
-$output = `sudo rm -rf /data`;
-$output = `[ ! -f /data/coldstake.db ] && sudo mkdir /data && sudo chown www-data:www-data /data && sudo chmod 770 /data`;
+$output = `rm -rf /data`;
+$output = `[ ! -f /data/coldstake.db ] && mkdir /data && touch /data/coldstake.db && chown www-data:www-data /data -R && chmod 770 /data -R`;
 
 // Open/Create databas & whitelist table 
 class MyDB extends SQLite3 {
