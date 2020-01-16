@@ -18,17 +18,17 @@ COINRPCPORT=51475
 
 function setGeneralVars() {
 ## set general variables
+COINBIN=https://github.com/PIVX-Project/PIVX/releases/download/v4.0.1/pivx-4.0.1-x86_64-linux-gnu.tar.gz
+COINDLOC=/home/${NODE_USER}/${NODE_USER}node/pivx-4.0.1/bin/
 DATE_STAMP="$(date +%y-%m-%d-%s)"
 OS_VER="Ubuntu*"
 RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-COINBIN=https://github.com/PIVX-Project/PIVX/releases/download/v4.0.0/pivx-4.0.0-x86_64-linux-gnu.tar.gz
 COINDAEMON=${NODE_USER}d
 COINSTARTUP=/home/${NODE_USER}/${NODE_USER}-start
 COINSTOP=/home/${NODE_USER}/${NODE_USER}-stop
 COININFO=/home/${NODE_USER}/${NODE_USER}-cli
 COINBINDIR=/home/${NODE_USER}/${NODE_USER}node/
-COINDLOC=/home/${NODE_USER}/${NODE_USER}node/pivx-4.0.0/bin/
 COINSERVICELOC=/etc/systemd/system/
 COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
