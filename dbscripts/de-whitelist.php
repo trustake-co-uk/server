@@ -1,5 +1,5 @@
 <?php
-require ('include/functions.php');
+require ('functions.php');
 $wallet = new phpFunctions_Wallet();
 
 //Set the date
@@ -32,9 +32,8 @@ EOF;
     // De-whitelist the Delegator address
     $rpcresult = $wallet->rpc('delegatorremove', '"' . $DelegatorAddress . '"');
     if ($rpcresult == false) {
-        exit(' Something went wrong checking the node! - please try again in a new tab it could just be a timeout.');
+        echo "Something went wrong checking the node! \n\n";
     } else {
-
         //List what's been de-registered to screen
         echo $DelegatorAddress . " has been de-registered with expiry date of " . $ExpiryDate . "\n\n";
     }

@@ -1,5 +1,5 @@
 #!/bin/bash
-/usr/bin/php /var/secure/de-whitelist.php &>> /root/delist.log
+/usr/bin/php /var/secure/de-whitelist.php &>> /var/secure/delist.log
 
 ## run "crontab -e" as root and add the following to run hourly
 ## 0 * * * * /var/secure/delist
